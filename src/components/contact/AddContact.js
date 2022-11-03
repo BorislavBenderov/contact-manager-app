@@ -1,20 +1,48 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-export const AddContact = () => {
+export const AddContact = ({addContactHandler}) => {
+  const [values, setValues] = useState({
+    name: '',
+    email: ''
+  });
+
+  const changeHandler = (e) => {
+    setValues(state => ({
+      ...state,
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    addContactHandler(values);
+  }
+
   return (
     <div className='ui main'>
-        <h2>Add Contact</h2>
-        <form className='ui form'>
-            <div className="field">
-                <label>Name</label>
-                <input type="text" name='name' placeholder='Name' />
-            </div>
-            <div className="field">
-                <label>Email</label>
-                <input type="text" name='email' placeholder='Email' />
-            </div>
-            <button className='ui button blue'>Add</button>
-        </form>
+      <h2>Add Contact</h2>
+      <form className='ui form' onSubmit={onSubmit}>
+        <div className="field">
+          <label>Name</label>
+          <input
+            type="text"
+            name='name'
+            placeholder='Name'
+            value={values.name}
+            onChange={changeHandler} />
+        </div>
+        <div className="field">
+          <label>Email</label>
+          <input
+            type="text"
+            name='email'
+            placeholder='Email'
+            value={values.email}
+            onChange={changeHandler} />
+        </div>
+        <button className='ui button blue'>Add</button>
+      </form>
     </div>
   );
 }
