@@ -1,7 +1,7 @@
 import React from 'react';
 import user from '../../images/user.png';
 
-export const ContactCard = ({contact}) => {
+export const ContactCard = ({contact, clickHandler}) => {
     return (
         <div className="item">
             <img className='ui avatar image' src={user} alt="user" />
@@ -10,7 +10,8 @@ export const ContactCard = ({contact}) => {
                 <div>{contact.email}</div>
             </div>
             <i className='trash alternate outline icon'
-            style={{color:'red', marginTop: "7px"}}></i>
+            style={{color:'red', marginTop: "7px"}}
+            onClick={() => clickHandler(contact.id)}></i>
         </div>
     );
 }
