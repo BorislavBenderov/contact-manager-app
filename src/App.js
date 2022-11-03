@@ -21,9 +21,10 @@ function App() {
     )
   }
 
-  const removeContactHandler = (id) => {
-    setContacts(contacts.filter(contact => contact.id !== id));
+  const removeContactHandler = async (id) => {
+    await api.delete(`/contacts/${id}`);
 
+    setContacts(contacts.filter(contact => contact.id !== id));
   }
 
   useEffect(() => {
