@@ -4,12 +4,21 @@ import './App.css';
 import { Header } from './components/header/Header';
 import { AddContact } from './components/contact/AddContact';
 import { ContactList } from './components/contact/ContactList';
+import api from './api/contacts';
 
 function App() {
   const [contacts, setContacts] = useState([]);
 
-  const addContactHandler = (contact) => {
-    setContacts([...contacts, { id: uuid(), ...contact }]);
+  const onCreate = async (userdata) => {
+    const request = {
+      id: uuid(),
+      ...userdata
+    };
+
+    const response = await api.post('/contacts', request);
+    setContacts(oldState => 
+      [...oldState, response.data]
+    )
   }
 
   const removeContactHandler = (id) => {
@@ -18,20 +27,15 @@ function App() {
   }
 
   useEffect(() => {
-    const retriveContacts = JSON.parse(localStorage.getItem("contacts"));
-
-    if (retriveContacts) {
-      setContacts(retriveContacts);
-    }
+    fetch('http://localhost:3004/contacts')
+    .then(res => res.json())
+    .then(result => setContacts(Object.values(result)))
   }, [])
 
-  useEffect(() => {
-    localStorage.setItem("contacts", JSON.stringify(contacts));
-  }, [contacts])
   return (
     <div className="ui container">
       <Header />
-      <AddContact addContactHandler={addContactHandler} />
+      <AddContact onCreate={onCreate} />
       <ContactList contacts={contacts} removeContactHandler={removeContactHandler} />
     </div>
   );

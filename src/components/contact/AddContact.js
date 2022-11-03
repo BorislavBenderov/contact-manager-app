@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export const AddContact = ({addContactHandler}) => {
+export const AddContact = ({onCreate}) => {
   const [values, setValues] = useState({
     name: '',
     email: ''
@@ -16,7 +16,9 @@ export const AddContact = ({addContactHandler}) => {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    addContactHandler(values);
+    const userdata = Object.fromEntries(new FormData(e.target));
+
+    onCreate(userdata);
   }
 
   return (
